@@ -70,15 +70,23 @@ export default {
       this.isLoading = true
 
       if (this.originalText == '' && this.encodedText == '') {
-        this.$alert('Isi salah satu dulu dong sayang 😘', 'Oops!', {
-          confirmButtonText: 'OK',
+        await this.$swal({
+          title: 'Oops!',
+          text: 'Isi salah satu dulu dong zeyeng 😘',
+          width: '20rem',
+          confirmButtonText: 'Ocay',
+          confirmButtonColor: '#67C23A',
         })
         this.isDisable = false
         this.isLoading = false
         return
       } else if (this.originalText != '' && this.encodedText != '') {
-        this.$alert('Klik "Clear" dulu ya sayang 😘', 'Oops!', {
-          confirmButtonText: 'OK',
+        await this.$swal({
+          title: 'Oops!',
+          text: 'Klik "Clear" dulu ya zeyeng 😘',
+          width: '20rem',
+          confirmButtonText: 'Ocay',
+          confirmButtonColor: '#67C23A',
         })
         this.isDisable = false
         this.isLoading = false
