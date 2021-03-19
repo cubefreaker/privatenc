@@ -9,6 +9,7 @@
     "dev": "vue-cli-service serve --port $PORT"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^2.6.5",
     "element-ui": "^2.15.1",
     "vue": "^2.6.10",

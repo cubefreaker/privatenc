@@ -14,18 +14,19 @@
             <el-button
               round
               type="danger"
-              :disabled="disableStat"
+              :disabled="isDisable"
               @click="reset"
-              ><i class="el-icon-close"></i> Reset</el-button
-            >
+              icon="el-icon-close"
+              >Clear
+            </el-button>
             <el-button
               round
               type="success"
-              :disabled="disableStat"
+              :disabled="isDisable"
               @click="translate"
+              :loading="isLoading"
+              icon="el-icon-sort"
             >
-              <i v-show="!isLoading" class="el-icon-sort"></i>
-              <i v-show="isLoading" class="el-icon-loading"></i>
               Translate
             </el-button>
           </el-form-item>
@@ -37,28 +38,86 @@
       </div>
     </el-main>
     <el-footer>
-      <div class="copyright">@copyright mas-mas ganteng 2021</div>
+      <div class="copyright">@copyright by mas-mas ganteng 2021</div>
     </el-footer>
   </el-container>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'home',
   data() {
     return {
       originalText: '',
       encodedText: '',
-      disableStat: false,
+      isDisable: false,
       isLoading: false,
     }
   },
   methods: {
     reset() {
-      console.log('reset')
+      this.originalText = ''
+      this.encodedText = ''
     },
-    translate() {
-      console.log(process.env)
+    async translate() {
+      let url = ''
+      let dataPost = ''
+      let type = 'encrypt'
+
+      this.isDisable = true
+      this.isLoading = true
+
+      if (this.originalText == '' && this.encodedText == '') {
+        this.$alert('Isi salah satu dulu dong sayang 😘', 'Oops!', {
+          confirmButtonText: 'OK',
+        })
+        this.isDisable = false
+        this.isLoading = false
+        return
+      } else if (this.originalText != '' && this.encodedText != '') {
+        this.$alert('Klik "Clear" dulu ya sayang 😘', 'Oops!', {
+          confirmButtonText: 'OK',
+        })
+        this.isDisable = false
+        this.isLoading = false
+        return
+      } else if (this.originalText != '') {
+        url = process.env.VUE_APP_wc_tWOsG_eNc_VUE_APP_SnNGZIb_DofsdiS
+        dataPost = this.originalText
+      } else if (this.encodedText != '') {
+        type = 'decrypt'
+        url = process.env.VUE_APP_wc_tWOsG_dEc_VUE_APP_SnNGZIb_DofsdiS
+        dataPost = this.encodedText
+      }
+
+      await axios
+        .post(
+          url,
+          { message: dataPost },
+          {
+            headers: {
+              'r2-7zGymRUg_KP':
+                process.env
+                  .VUE_APP_ryqJbkBUyS_VUE_APP_jpNbolSzbkBUS_LZqwFg_VUE_APP_mSzjRKNGkkdvlSKJnKj,
+            },
+          }
+        )
+        .then(res => {
+          if (type == 'encrypt') {
+            this.encodedText = res.data.message
+          } else {
+            this.originalText = res.data.message
+          }
+          this.isDisable = false
+          this.isLoading = false
+        })
+        .catch(error => {
+          alert(error)
+          this.isDisable = false
+          this.isLoading = false
+        })
     },
   },
 }
