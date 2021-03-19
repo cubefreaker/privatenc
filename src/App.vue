@@ -5,8 +5,14 @@
 </template>
 
 <style>
+@font-face {
+  font-family: "Cookiemonster";
+  src: local("Cookiemonster"),
+   url('./assets/fonts/Cookiemonster-gv11.ttf') format("truetype");
+}
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Cookiemonster', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
