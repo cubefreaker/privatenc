@@ -106,6 +106,7 @@ export default {
           { message: dataPost },
           {
             headers: {
+            'Access-Control-Allow-Origin': '*',
               'r2-7zGymRUg_KP':
                 process.env
                   .VUE_APP_ryqJbkBUyS_VUE_APP_jpNbolSzbkBUS_LZqwFg_VUE_APP_mSzjRKNGkkdvlSKJnKj,
