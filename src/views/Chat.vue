@@ -18,7 +18,9 @@
               ></el-button>
             </el-col>
             <el-col :lg="22" :xs="19" :sm="20">
-              <el-card>{{ e.message }}</el-card>
+              <el-card>{{
+                e.translated && translation[i] ? translation[i] : e.message
+              }}</el-card>
             </el-col>
           </el-row>
           <el-row
