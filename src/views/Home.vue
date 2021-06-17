@@ -21,6 +21,14 @@
             </el-button>
             <el-button
               round
+              type="primary"
+              @click="goToChat"
+              icon="el-icon-chat-line-round"
+            >
+              Chat
+            </el-button>
+            <el-button
+              round
               type="success"
               :disabled="isDisable"
               @click="translate"
@@ -60,6 +68,9 @@ export default {
     reset() {
       this.originalText = ''
       this.encodedText = ''
+    },
+    goToChat() {
+      this.$router.push('/chat')
     },
     async translate() {
       let url = ''
