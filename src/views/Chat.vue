@@ -49,7 +49,12 @@
     <el-footer>
       <el-row type="flex" justify="space-between">
         <el-col :lg="20" :sm="19" :xs="17">
-          <el-input type="textarea" :rows="2" v-model="msg"></el-input>
+          <el-input
+            type="textarea"
+            :rows="2"
+            @focus="onFocusTextBox"
+            v-model="msg"
+          ></el-input>
         </el-col>
         <el-col :lg="4" :sm="5" :xs="6">
           <el-button
@@ -227,6 +232,11 @@ export default {
       } else {
         this.log[index].translated = !this.log[index].translated
       }
+    },
+    onFocusTextBox() {
+      _.forEach(this.log, (val, key) => {
+        this.log[key].translated = false
+      })
     },
   },
   updated: function() {
