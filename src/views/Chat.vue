@@ -194,8 +194,12 @@ export default {
           })
     },
     async translate(index, msg) {
-      let url = process.env.VUE_APP_wc_tWOsG_ChTrNsLT_VUE_APP_SnNGZIb_DofsdiS
+      _.forEach(this.log, (val, key) => {
+        if (key != index) this.log[key].translated = false
+      })
+
       if (!this.translation[index]) {
+        let url = process.env.VUE_APP_wc_tWOsG_ChTrNsLT_VUE_APP_SnNGZIb_DofsdiS
         await axios
           .post(
             url,
