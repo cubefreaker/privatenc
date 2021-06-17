@@ -18,9 +18,12 @@
               ></el-button>
             </el-col>
             <el-col :lg="22" :xs="19" :sm="20">
-              <el-card>{{
-                e.translated && translation[i] ? translation[i] : e.message
-              }}</el-card>
+              <el-card
+                >{{
+                  e.translated && translation[i] ? translation[i] : e.message
+                }}
+                <p>{{ e.date | moment('ddd, DD MMM YY, HH:mm') }}</p>
+              </el-card>
             </el-col>
           </el-row>
           <el-row
@@ -30,9 +33,12 @@
             justify="end"
           >
             <el-col :lg="22" :xs="19" :sm="20">
-              <el-card>{{
-                e.translated && translation[i] ? translation[i] : e.message
-              }}</el-card>
+              <el-card
+                >{{
+                  e.translated && translation[i] ? translation[i] : e.message
+                }}
+                <p>{{ e.date | moment('ddd, DD MMM YY, HH:mm') }}</p>
+              </el-card>
             </el-col>
             <el-col :lg="1" :xs="3" :sm="2">
               <el-button
@@ -137,6 +143,7 @@ export default {
           pos: e.user == this.$session.get('user') ? 'right' : 'left',
           translated: false,
           message: e.message,
+          date: e.created_date,
         }
         return data
       })
@@ -273,5 +280,11 @@ export default {
   position: fixed;
   bottom: 0;
   width: 100%;
+}
+
+p {
+  font-size: x-small;
+  color: darkgrey;
+  margin: 1rem 0 -0.5rem 0;
 }
 </style>

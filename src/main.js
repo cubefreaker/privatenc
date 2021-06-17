@@ -17,6 +17,8 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 Vue.use(VueSweetalert2)
 
+Vue.use(require('vue-moment'))
+
 Vue.config.productionTip = false
 
 new Vue({
