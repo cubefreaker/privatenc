@@ -21,14 +21,6 @@
             </el-button>
             <el-button
               round
-              type="primary"
-              @click="goToChat"
-              icon="el-icon-chat-line-round"
-            >
-              Chat
-            </el-button>
-            <el-button
-              round
               type="success"
               :disabled="isDisable"
               @click="translate"
@@ -38,8 +30,19 @@
               Translate
             </el-button>
           </el-form-item>
+          <el-form-item>
+            <el-button
+              round
+              type="primary"
+              @click="goToChat"
+              icon="el-icon-chat-line-round"
+            >
+              Chat
+            </el-button>
+          </el-form-item>
         </el-form>
       </div>
+
       <div class="encoded-text">
         <h3>Encryption</h3>
         <el-input type="textarea" :rows="10" v-model="encodedText"></el-input>
