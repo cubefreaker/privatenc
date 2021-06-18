@@ -18,11 +18,15 @@
               ></el-button>
             </el-col>
             <el-col :lg="22" :xs="19" :sm="20">
-              <el-card
-                >{{
-                  e.translated && translation[i] ? translation[i] : e.message
-                }}
-                <p>{{ e.date | moment('ddd, DD MMM YY, HH:mm') }}</p>
+              <el-card id="cardLeft"
+                ><span id="textLeft">
+                  {{
+                    e.translated && translation[i] ? translation[i] : e.message
+                  }}
+                </span>
+                <p id="timeLeft">
+                  {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
+                </p>
               </el-card>
             </el-col>
           </el-row>
@@ -33,11 +37,15 @@
             justify="end"
           >
             <el-col :lg="22" :xs="19" :sm="20">
-              <el-card
-                >{{
-                  e.translated && translation[i] ? translation[i] : e.message
-                }}
-                <p>{{ e.date | moment('ddd, DD MMM YY, HH:mm') }}</p>
+              <el-card id="cardRight"
+                ><span id="textRight">
+                  {{
+                    e.translated && translation[i] ? translation[i] : e.message
+                  }}
+                </span>
+                <p id="timeRight">
+                  {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
+                </p>
               </el-card>
             </el-col>
             <el-col :lg="1" :xs="3" :sm="2">
@@ -162,6 +170,7 @@ export default {
           pos: data.user == this.$session.get('user') ? 'right' : 'left',
           translated: false,
           message: data.message,
+          date: data.date,
         })
       })
     },
@@ -282,9 +291,26 @@ export default {
   width: 100%;
 }
 
-p {
+#cardLeft {
+  background-color: deeppink;
+  opacity: 65%;
+}
+
+#textLeft {
+  color: white;
+  opacity: 100%;
+}
+
+#timeRight {
   font-size: x-small;
   color: darkgrey;
   margin: 1rem 0 -0.5rem 0;
+}
+
+#timeLeft {
+  font-size: x-small;
+  color: whitesmoke;
+  margin: 1rem 0 -0.5rem 0;
+  opacity: 100% !important;
 }
 </style>
