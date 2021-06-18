@@ -256,44 +256,49 @@ export default {
         confirmButtonText: 'Yes',
         cancelButtonText: 'Cancel',
         type: 'warning',
-      }).then(async () => {
-        let url = process.env.VUE_APP_wc_tWOsG_ChTdLt_VUE_APP_SnNGZIb_DofsdiS
-        let dataPost = {
-          channel: this.pusherChannel,
-          event: this.pusherEvent,
-          user: this.$session.get('user'),
-          message: this.log[index].message,
-          date: this.log[index].date,
-        }
-        await axios
-          .post(url, dataPost, {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'r2-7zGymRUg_KP':
-                process.env
-                  .VUE_APP_ryqJbkBUyS_VUE_APP_jpNbolSzbkBUS_LZqwFg_VUE_APP_mSzjRKNGkkdvlSKJnKj,
-            },
-          })
-          .then(res => {
-            if (res.data.status == 'failed') {
+        center: true,
+      })
+        .then(async () => {
+          let url = process.env.VUE_APP_wc_tWOsG_ChTdLt_VUE_APP_SnNGZIb_DofsdiS
+          let dataPost = {
+            channel: this.pusherChannel,
+            event: this.pusherEvent,
+            user: this.$session.get('user'),
+            message: this.log[index].message,
+            date: this.log[index].date,
+          }
+          await axios
+            .post(url, dataPost, {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'r2-7zGymRUg_KP':
+                  process.env
+                    .VUE_APP_ryqJbkBUyS_VUE_APP_jpNbolSzbkBUS_LZqwFg_VUE_APP_mSzjRKNGkkdvlSKJnKj,
+              },
+            })
+            .then(res => {
+              if (res.data.status == 'failed') {
+                this.$message({
+                  type: 'error',
+                  message: 'Error : ' + res.data.message,
+                })
+              } else {
+                this.$message({
+                  type: 'success',
+                  message: 'Chat deleted',
+                })
+              }
+            })
+            .catch(error => {
               this.$message({
                 type: 'error',
-                message: 'Error : ' + res.data.message,
+                message: 'Error : ' + error,
               })
-            } else {
-              this.$message({
-                type: 'success',
-                message: 'Chat deleted',
-              })
-            }
-          })
-          .catch(error => {
-            this.$message({
-              type: 'error',
-              message: 'Error : ' + error,
             })
-          })
-      })
+        })
+        .catch(() => {
+          return
+        })
     },
     async translate(index, msg) {
       _.forEach(this.log, (val, key) => {
