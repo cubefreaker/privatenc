@@ -23,7 +23,7 @@
                   <el-row>
                     <el-col>
                       <p
-                        style="font-style: italic;color:rgb(169, 169, 169);margin: -0.5rem 0 -0.5rem 0;"
+                        style="font-size: small;font-style: italic;color:rgb(169, 169, 169);margin: -0.5rem 0 -0.5rem 0;"
                       >
                         &Oslash;Message was deleted
                       </p>
@@ -69,7 +69,7 @@
                   <el-row>
                     <el-col>
                       <p
-                        style="font-style: italic;color:rgb(169, 169, 169);margin: -0.5rem 0 -0.5rem 0;"
+                        style="font-size: small;font-style: italic;color:rgb(169, 169, 169);margin: -0.5rem 0 -0.5rem 0;"
                       >
                         &Oslash;You deleted this message
                       </p>
