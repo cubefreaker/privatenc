@@ -19,28 +19,41 @@
             </el-col>
             <el-col :lg="22" :xs="19" :sm="20">
               <el-card id="cardLeft">
-                <el-row>
-                  <el-col id="textLeft">
-                    {{
-                      e.translated && translation[i]
-                        ? translation[i]
-                        : e.message
-                    }}
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col>
-                    <p id="timeLeft">
-                      {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
-                    </p>
-                    <a
-                      id="delBtnLeft"
-                      @click="confirmDelete(i)"
-                      v-show="$session.get('user') == e.user"
-                      ><i class="el-icon-delete"></i
-                    ></a>
-                  </el-col>
-                </el-row>
+                <div v-if="!e.status">
+                  <el-row>
+                    <el-col>
+                      <p
+                        style="font-style: italic;color:rgb(169, 169, 169);margin:auto;"
+                      >
+                        &Oslash;Message was deleted
+                      </p>
+                    </el-col>
+                  </el-row>
+                </div>
+                <div v-if="e.status">
+                  <el-row>
+                    <el-col id="textLeft">
+                      {{
+                        e.translated && translation[i]
+                          ? translation[i]
+                          : e.message
+                      }}
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col>
+                      <p id="timeLeft">
+                        {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
+                      </p>
+                      <a
+                        id="delBtnLeft"
+                        @click="confirmDelete(i)"
+                        v-show="$session.get('user') == e.user"
+                        ><i class="el-icon-delete"></i
+                      ></a>
+                    </el-col>
+                  </el-row>
+                </div>
               </el-card>
             </el-col>
           </el-row>
@@ -52,28 +65,41 @@
           >
             <el-col :lg="22" :xs="19" :sm="20">
               <el-card id="cardRight">
-                <el-row>
-                  <el-col id="textRight">
-                    {{
-                      e.translated && translation[i]
-                        ? translation[i]
-                        : e.message
-                    }}
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col>
-                    <a
-                      id="delBtnRight"
-                      @click="confirmDelete(i)"
-                      v-show="$session.get('user') == e.user"
-                      ><i class="el-icon-delete"></i
-                    ></a>
-                    <p id="timeRight">
-                      {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
-                    </p>
-                  </el-col>
-                </el-row>
+                <div v-if="!e.status">
+                  <el-row>
+                    <el-col>
+                      <p
+                        style="font-style: italic;color:rgb(245, 245, 245);margin: auto;"
+                      >
+                        &Oslash;You deleted this message
+                      </p>
+                    </el-col>
+                  </el-row>
+                </div>
+                <div v-if="e.status">
+                  <el-row>
+                    <el-col id="textRight">
+                      {{
+                        e.translated && translation[i]
+                          ? translation[i]
+                          : e.message
+                      }}
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col>
+                      <a
+                        id="delBtnRight"
+                        @click="confirmDelete(i)"
+                        v-show="$session.get('user') == e.user"
+                        ><i class="el-icon-delete"></i
+                      ></a>
+                      <p id="timeRight">
+                        {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
+                      </p>
+                    </el-col>
+                  </el-row>
+                </div>
               </el-card>
             </el-col>
             <el-col :lg="1" :xs="3" :sm="2">
@@ -180,6 +206,7 @@ export default {
           user: e.user,
           translated: false,
           message: e.message,
+          status: e.status,
           date: e.created_date,
         }
         return data
