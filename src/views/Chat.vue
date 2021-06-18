@@ -191,6 +191,9 @@ export default {
             this.pusherEvent = res.data.event
             this.subscribe()
             if (res.data.content.length > 0) this.mapLog(res.data.content)
+            this.$nextTick(function() {
+              window.scrollTo(0, document.body.scrollHeight)
+            })
           } else {
             alert(res.data.message)
           }
