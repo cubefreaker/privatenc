@@ -6,6 +6,13 @@ import router from './router'
 import VueSession from 'vue-session'
 Vue.use(VueSession)
 
+import IdleVue from 'idle-vue'
+const eventsHub = new Vue()
+Vue.use(IdleVue, {
+  eventEmitter: eventsHub,
+  idleTime: process.env.VUE_APP_IDDLE_TIMEOUT,
+})
+
 //element ui
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'

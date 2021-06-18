@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "core-js": "^2.6.5",
     "element-ui": "^2.15.1",
+    "idle-vue": "^2.0.5",
     "pusher-js": "^7.0.3",
     "vue": "^2.6.10",
     "vue-moment": "^4.1.0",

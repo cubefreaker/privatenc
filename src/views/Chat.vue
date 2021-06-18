@@ -168,6 +168,17 @@ export default {
       this.initChat()
     }
   },
+  onIdle() {
+    this.$session.destroy()
+    this.$alert('Session expired, please re-login', 'Attention!', {
+      confirmButtonText: 'OK',
+      type: 'warning',
+      center: true,
+      callback: () => {
+        this.$router.push('/login')
+      },
+    })
+  },
   methods: {
     async initChat() {
       let url = process.env.VUE_APP_wc_tWOsG_gTCht_VUE_APP_SnNGZIb_DofsdiS
