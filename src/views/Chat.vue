@@ -225,7 +225,7 @@ export default {
         if (data.type == 'delete') {
           _.forEach(this.log, (e, i) => {
             if (data.message == e.message && data.date == e.date)
-              this.log.splice(i, 1)
+              this.log[i].status = 0
           })
         } else {
           this.log.push({
@@ -280,7 +280,7 @@ export default {
           })
     },
     confirmDelete(index) {
-      this.$confirm('Delete this chat?', {
+      this.$confirm('Delete this message?', {
         confirmButtonText: 'Yes',
         cancelButtonText: 'Cancel',
         type: 'warning',
@@ -313,7 +313,7 @@ export default {
               } else {
                 this.$message({
                   type: 'success',
-                  message: 'Chat deleted',
+                  message: 'Message deleted',
                 })
               }
             })
