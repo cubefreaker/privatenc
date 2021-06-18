@@ -271,6 +271,9 @@ export default {
               this.msg = ''
               this.isDisable = false
               this.isLoading = false
+              this.$nextTick(function() {
+                window.scrollTo(0, document.body.scrollHeight)
+              })
             }
           })
           .catch(error => {
@@ -369,11 +372,11 @@ export default {
       })
     },
   },
-  updated: function() {
-    this.$nextTick(function() {
-      window.scrollTo(0, document.body.scrollHeight)
-    })
-  },
+  // updated: function() {
+  //   this.$nextTick(function() {
+  //     window.scrollTo(0, document.body.scrollHeight)
+  //   })
+  // },
 }
 </script>
 
