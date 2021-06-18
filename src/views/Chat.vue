@@ -69,7 +69,7 @@
                   <el-row>
                     <el-col>
                       <p
-                        style="font-style: italic;color:rgb(245, 245, 245);margin: -0.5rem 0 -0.5rem 0;"
+                        style="font-style: italic;color:rgb(169, 169, 169);margin: -0.5rem 0 -0.5rem 0;"
                       >
                         &Oslash;You deleted this message
                       </p>
@@ -412,7 +412,7 @@ export default {
 }
 
 #cardRight {
-  background-color: rgba(255, 115, 190, 0.842);
+  background-color: rgb(245, 225, 218);
 }
 
 #textLeft {
@@ -420,7 +420,6 @@ export default {
 }
 
 #textRight {
-  color: rgb(255, 255, 255);
   margin-bottom: 1rem;
 }
 
@@ -433,7 +432,7 @@ export default {
 
 #delBtnRight {
   font-size: small;
-  color: rgb(245, 245, 245);
+  color: rgb(255, 0, 0);
   margin: 0 0 -0.5rem 0;
   float: left;
 }
@@ -447,7 +446,7 @@ export default {
 
 #timeRight {
   font-size: x-small;
-  color: rgb(245, 245, 245);
+  color: rgb(169, 169, 169);
   margin: 0 0 -0.5rem 0;
   float: right;
 }
