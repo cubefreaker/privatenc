@@ -292,25 +292,22 @@ export default {
 }
 
 #cardLeft {
-  background-color: deeppink;
-  opacity: 65%;
+  background-color: rgba(255, 20, 145, 0.959);
 }
 
 #textLeft {
-  color: white;
-  opacity: 100%;
+  color: rgb(255, 255, 255);
 }
 
 #timeRight {
   font-size: x-small;
-  color: darkgrey;
+  color: rgb(169, 169, 169);
   margin: 1rem 0 -0.5rem 0;
 }
 
 #timeLeft {
   font-size: x-small;
-  color: whitesmoke;
+  color: rgb(245, 245, 245);
   margin: 1rem 0 -0.5rem 0;
-  opacity: 100% !important;
 }
 </style>
