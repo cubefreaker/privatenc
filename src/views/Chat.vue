@@ -233,6 +233,7 @@ export default {
             user: data.user,
             translated: false,
             message: data.message,
+            status: 1,
             date: data.date,
           })
         }
