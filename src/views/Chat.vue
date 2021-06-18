@@ -18,15 +18,29 @@
               ></el-button>
             </el-col>
             <el-col :lg="22" :xs="19" :sm="20">
-              <el-card id="cardLeft"
-                ><span id="textLeft">
-                  {{
-                    e.translated && translation[i] ? translation[i] : e.message
-                  }}
-                </span>
-                <p id="timeLeft">
-                  {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
-                </p>
+              <el-card id="cardLeft">
+                <el-row>
+                  <el-col id="textLeft">
+                    {{
+                      e.translated && translation[i]
+                        ? translation[i]
+                        : e.message
+                    }}
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col>
+                    <p id="timeLeft">
+                      {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
+                    </p>
+                    <a
+                      id="delBtnLeft"
+                      @click="confirmDelete(i)"
+                      v-show="$session.get('user') == e.user"
+                      ><i class="el-icon-delete"></i
+                    ></a>
+                  </el-col>
+                </el-row>
               </el-card>
             </el-col>
           </el-row>
@@ -37,15 +51,29 @@
             justify="end"
           >
             <el-col :lg="22" :xs="19" :sm="20">
-              <el-card id="cardRight"
-                ><span id="textRight">
-                  {{
-                    e.translated && translation[i] ? translation[i] : e.message
-                  }}
-                </span>
-                <p id="timeRight">
-                  {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
-                </p>
+              <el-card id="cardRight">
+                <el-row>
+                  <el-col id="textRight">
+                    {{
+                      e.translated && translation[i]
+                        ? translation[i]
+                        : e.message
+                    }}
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col>
+                    <a
+                      id="delBtnRight"
+                      @click="confirmDelete(i)"
+                      v-show="$session.get('user') == e.user"
+                      ><i class="el-icon-delete"></i
+                    ></a>
+                    <p id="timeRight">
+                      {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
+                    </p>
+                  </el-col>
+                </el-row>
               </el-card>
             </el-col>
             <el-col :lg="1" :xs="3" :sm="2">
@@ -149,6 +177,7 @@ export default {
       this.log = _.map(_.cloneDeep(arr), e => {
         let data = {
           pos: e.user == this.$session.get('user') ? 'right' : 'left',
+          user: e.user,
           translated: false,
           message: e.message,
           date: e.created_date,
@@ -166,12 +195,20 @@ export default {
       )
       let channel = pusher.subscribe(this.pusherChannel)
       channel.bind(this.pusherEvent, data => {
-        this.log.push({
-          pos: data.user == this.$session.get('user') ? 'right' : 'left',
-          translated: false,
-          message: data.message,
-          date: data.date,
-        })
+        if (data.type == 'delete') {
+          _.forEach(this.log, (e, i) => {
+            if (data.message == e.message && data.date == e.date)
+              this.log.splice(i, 1)
+          })
+        } else {
+          this.log.push({
+            pos: data.user == this.$session.get('user') ? 'right' : 'left',
+            user: data.user,
+            translated: false,
+            message: data.message,
+            date: data.date,
+          })
+        }
       })
     },
     async sendMsg() {
@@ -213,6 +250,50 @@ export default {
             this.isDisable = false
             this.isLoading = false
           })
+    },
+    confirmDelete(index) {
+      this.$confirm('Delete this chat?', {
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }).then(async () => {
+        let url = process.env.VUE_APP_wc_tWOsG_ChTdLt_VUE_APP_SnNGZIb_DofsdiS
+        let dataPost = {
+          channel: this.pusherChannel,
+          event: this.pusherEvent,
+          user: this.$session.get('user'),
+          message: this.log[index].message,
+          date: this.log[index].date,
+        }
+        await axios
+          .post(url, dataPost, {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'r2-7zGymRUg_KP':
+                process.env
+                  .VUE_APP_ryqJbkBUyS_VUE_APP_jpNbolSzbkBUS_LZqwFg_VUE_APP_mSzjRKNGkkdvlSKJnKj,
+            },
+          })
+          .then(res => {
+            if (res.data.status == 'failed') {
+              this.$message({
+                type: 'error',
+                message: 'Error : ' + res.data.message,
+              })
+            } else {
+              this.$message({
+                type: 'success',
+                message: 'Chat deleted',
+              })
+            }
+          })
+          .catch(error => {
+            this.$message({
+              type: 'error',
+              message: 'Error : ' + error,
+            })
+          })
+      })
     },
     async translate(index, msg) {
       _.forEach(this.log, (val, key) => {
@@ -291,23 +372,44 @@ export default {
   width: 100%;
 }
 
-#cardLeft {
-  background-color: rgba(255, 20, 145, 0.959);
+#cardRight {
+  background-color: rgba(255, 115, 190, 0.842);
 }
 
 #textLeft {
-  color: rgb(255, 255, 255);
+  margin-bottom: 1rem;
 }
 
-#timeRight {
-  font-size: x-small;
-  color: rgb(169, 169, 169);
-  margin: 1rem 0 -0.5rem 0;
+#textRight {
+  color: rgb(255, 255, 255);
+  margin-bottom: 1rem;
+}
+
+#delBtnLeft {
+  font-size: small;
+  color: rgb(255, 0, 0);
+  margin: 0 0 -0.5rem 0;
+  float: right;
+}
+
+#delBtnRight {
+  font-size: small;
+  color: rgb(245, 245, 245);
+  margin: 0 0 -0.5rem 0;
+  float: left;
 }
 
 #timeLeft {
   font-size: x-small;
+  color: rgb(169, 169, 169);
+  margin: 0rem 0 -0.5rem 0;
+  float: left;
+}
+
+#timeRight {
+  font-size: x-small;
   color: rgb(245, 245, 245);
-  margin: 1rem 0 -0.5rem 0;
+  margin: 0 0 -0.5rem 0;
+  float: right;
 }
 </style>
