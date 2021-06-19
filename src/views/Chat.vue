@@ -10,12 +10,7 @@
             justify="start"
           >
             <el-col :lg="1" :xs="3" :sm="2">
-              <el-button
-                type="primary"
-                @click="translate(i, e.message)"
-                icon="el-icon-user-solid"
-                circle
-              ></el-button>
+              <el-avatar>{{ e.user.charAt(0).toUpperCase() }}</el-avatar>
             </el-col>
             <el-col :lg="22" :xs="19" :sm="20">
               <el-card id="cardLeft">
@@ -45,11 +40,10 @@
                       <p id="timeLeft">
                         {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
                       </p>
-                      <a
-                        id="delBtnLeft"
-                        @click="confirmDelete(i)"
-                        v-show="$session.get('user') == e.user"
-                        ><i class="el-icon-delete"></i
+                    </el-col>
+                    <el-col>
+                      <a id="viewBtnLeft" @click="translate(i, e.message)"
+                        ><i class="el-icon-view"></i
                       ></a>
                     </el-col>
                   </el-row>
@@ -88,14 +82,24 @@
                   </el-row>
                   <el-row>
                     <el-col>
-                      <a
-                        id="delBtnRight"
-                        @click="confirmDelete(i)"
-                        v-show="$session.get('user') == e.user"
+                      <a id="viewBtnRight" @click="translate(i, e.message)"
+                        ><i class="el-icon-view"></i
+                      ></a>
+                      <a id="delBtn" @click="confirmDelete(i)"
                         ><i class="el-icon-delete"></i
                       ></a>
                       <p id="timeRight">
                         {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
+                        &nbsp;
+                        <i
+                          id="checkRead"
+                          v-if="e.isRead"
+                          class="el-icon-success"
+                          ><em>Read</em></i
+                        >
+                        <i v-if="!e.isRead" class="el-icon-circle-check"
+                          ><em>Sent</em></i
+                        >
                       </p>
                     </el-col>
                   </el-row>
@@ -103,12 +107,7 @@
               </el-card>
             </el-col>
             <el-col :lg="1" :xs="3" :sm="2">
-              <el-button
-                type="success"
-                @click="translate(i, e.message)"
-                icon="el-icon-user-solid"
-                circle
-              ></el-button>
+              <el-avatar>{{ e.user.charAt(0).toUpperCase() }}</el-avatar>
             </el-col>
           </el-row>
         </div>
@@ -221,6 +220,7 @@ export default {
           translated: false,
           message: e.message,
           status: e.status,
+          isRead: e.is_read,
           date: e.created_date,
         }
         return data
@@ -241,6 +241,15 @@ export default {
             if (data.message == e.message && data.date == e.date)
               this.log[i].status = 0
           })
+        } else if (data.type == 'read') {
+          _.forEach(this.log, (e, i) => {
+            if (
+              data.message == e.message &&
+              data.date == e.date &&
+              data.user == e.user
+            )
+              this.log[i].isRead = 1
+          })
         } else {
           this.log.push({
             pos: data.user == this.$session.get('user') ? 'right' : 'left',
@@ -248,15 +257,13 @@ export default {
             translated: false,
             message: data.message,
             status: 1,
+            isRead: data.isRead,
             date: data.date,
           })
         }
       })
     },
     async sendMsg() {
-      this.isDisable = true
-      this.isLoading = true
-
       let url = process.env.VUE_APP_wc_tWOsG_ChT_VUE_APP_SnNGZIb_DofsdiS
       let dataPost = {
         channel: this.pusherChannel,
@@ -266,7 +273,10 @@ export default {
         historyId: this.historyId,
       }
 
-      if (this.msg != '' && this.msg != null)
+      if (this.msg != '' && this.msg != null) {
+        this.isDisable = true
+        this.isLoading = true
+
         await axios
           .post(url, dataPost, {
             headers: {
@@ -295,6 +305,7 @@ export default {
             this.isDisable = false
             this.isLoading = false
           })
+      }
     },
     confirmDelete(index) {
       this.$confirm('Delete this message?', {
@@ -365,12 +376,37 @@ export default {
               },
             }
           )
-          .then(res => {
+          .then(async res => {
             if (res.data.status == 'failed') {
               alert(res.data.message)
             } else {
               this.translation[index] = res.data.decodedMsg
               this.log[index].translated = true
+
+              if (
+                this.log[index].user != this.$session.get('user') &&
+                !this.log[index].isRead
+              ) {
+                let dataPost = {
+                  channel: this.pusherChannel,
+                  event: this.pusherEvent,
+                  user: this.log[index].user,
+                  message: this.log[index].message,
+                  date: this.log[index].date,
+                }
+                await axios.post(
+                  process.env.VUE_APP_wc_tWOsG_ChTrD_VUE_APP_SnNGZIb_DofsdiS,
+                  dataPost,
+                  {
+                    headers: {
+                      'Access-Control-Allow-Origin': '*',
+                      'r2-7zGymRUg_KP':
+                        process.env
+                          .VUE_APP_ryqJbkBUyS_VUE_APP_jpNbolSzbkBUS_LZqwFg_VUE_APP_mSzjRKNGkkdvlSKJnKj,
+                    },
+                  }
+                )
+              }
             }
           })
           .catch(error => {
@@ -434,18 +470,29 @@ export default {
   margin-bottom: 1rem;
 }
 
-#delBtnLeft {
-  font-size: small;
-  color: rgb(255, 0, 0);
-  margin: 0 0 -0.5rem 0;
-  float: right;
-}
-
-#delBtnRight {
+#delBtn {
   font-size: small;
   color: rgb(255, 0, 0);
   margin: 0 0 -0.5rem 0;
   float: left;
+}
+
+#viewBtnLeft {
+  font-size: small;
+  color: rgb(30, 143, 255);
+  margin: 0 0rem -0.5rem 0;
+  float: right;
+}
+
+#viewBtnRight {
+  font-size: small;
+  color: rgb(30, 143, 255);
+  margin: 0 1rem -0.5rem 0;
+  float: left;
+}
+
+#checkRead {
+  color: rgb(30, 143, 255);
 }
 
 #timeLeft {
