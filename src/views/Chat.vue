@@ -254,11 +254,7 @@ export default {
           })
         } else if (data.type == 'read') {
           _.forEach(this.log, (e, i) => {
-            if (
-              data.message == e.message &&
-              data.date == e.date &&
-              data.user == e.user
-            )
+            if (data.message == e.message && data.user == e.user)
               this.log[i].isRead = 1
           })
         } else {
@@ -394,31 +390,7 @@ export default {
             } else {
               this.translation[index] = res.data.decodedMsg
               this.log[index].translated = true
-
-              if (
-                this.log[index].user != this.$session.get('user') &&
-                !this.log[index].isRead
-              ) {
-                let dataPost = {
-                  channel: this.pusherChannel,
-                  event: this.pusherEvent,
-                  user: this.log[index].user,
-                  message: this.log[index].message,
-                  date: this.log[index].date,
-                }
-                await axios.post(
-                  process.env.VUE_APP_wc_tWOsG_ChTrD_VUE_APP_SnNGZIb_DofsdiS,
-                  dataPost,
-                  {
-                    headers: {
-                      'Access-Control-Allow-Origin': '*',
-                      'r2-7zGymRUg_KP':
-                        process.env
-                          .VUE_APP_ryqJbkBUyS_VUE_APP_jpNbolSzbkBUS_LZqwFg_VUE_APP_mSzjRKNGkkdvlSKJnKj,
-                    },
-                  }
-                )
-              }
+              this.chatRead(index)
             }
           })
           .catch(error => {
@@ -426,6 +398,33 @@ export default {
           })
       } else {
         this.log[index].translated = !this.log[index].translated
+        this.chatRead(index)
+      }
+    },
+    async chatRead(index) {
+      if (
+        this.log[index].user != this.$session.get('user') &&
+        !this.log[index].isRead
+      ) {
+        let dataPost = {
+          channel: this.pusherChannel,
+          event: this.pusherEvent,
+          user: this.log[index].user,
+          message: this.log[index].message,
+          date: this.log[index].date,
+        }
+        await axios.post(
+          process.env.VUE_APP_wc_tWOsG_ChTrD_VUE_APP_SnNGZIb_DofsdiS,
+          dataPost,
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'r2-7zGymRUg_KP':
+                process.env
+                  .VUE_APP_ryqJbkBUyS_VUE_APP_jpNbolSzbkBUS_LZqwFg_VUE_APP_mSzjRKNGkkdvlSKJnKj,
+            },
+          }
+        )
       }
     },
     onFocusTextBox() {
