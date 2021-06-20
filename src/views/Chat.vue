@@ -209,6 +209,7 @@ export default {
             this.historyId = res.data.historyId
             this.pusherChannel = res.data.channel
             this.pusherEvent = res.data.event
+            this.userTo = res.data.userTo
             this.subscribe()
             if (res.data.content.length > 0) this.mapLog(res.data.content)
             this.$nextTick(function() {
@@ -279,6 +280,7 @@ export default {
         channel: this.pusherChannel,
         event: this.pusherEvent,
         user: this.$session.get('user'),
+        userTo: this.userTo,
         message: this.msg,
         historyId: this.historyId,
       }
