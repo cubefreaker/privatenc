@@ -38,6 +38,16 @@
                   <el-row>
                     <el-col>
                       <p id="timeLeft">
+                        <i
+                          id="checkReadLeft"
+                          v-if="e.isRead"
+                          class="el-icon-success"
+                          ><em>Read</em></i
+                        >
+                        <i v-if="!e.isRead" class="el-icon-circle-check"
+                          ><em>Unread</em></i
+                        >
+                        &nbsp;
                         {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
                       </p>
                     </el-col>
@@ -92,7 +102,7 @@
                         {{ e.date | moment('ddd, DD MMM YY, HH:mm') }}
                         &nbsp;
                         <i
-                          id="checkRead"
+                          id="checkReadRight"
                           v-if="e.isRead"
                           class="el-icon-success"
                           ><em>Read</em></i
@@ -493,8 +503,12 @@ export default {
   float: left;
 }
 
-#checkRead {
+#checkReadRight {
   color: rgb(30, 143, 255);
+}
+
+#checkReadLeft {
+  color: rgb(60, 179, 114);
 }
 
 #timeLeft {
