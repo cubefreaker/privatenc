@@ -165,6 +165,8 @@ export default {
       translation: {},
       isDisable: false,
       isLoading: false,
+      chatOffset: 0,
+      chatLimit: 10,
     }
   },
   beforeCreate: function() {
@@ -174,8 +176,12 @@ export default {
   },
   created() {
     if (this.$session.exists()) {
+      window.addEventListener('scroll', this.handleScroll)
       this.initChat()
     }
+  },
+  destroyed: function() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
   onIdle() {
     this.$session.destroy()
@@ -189,12 +195,49 @@ export default {
     })
   },
   methods: {
+    async handleScroll() {
+      if (!window.scrollY) {
+        this.chatOffset += 10
+        let url = process.env.VUE_APP_wc_tWOsG_gTCht_VUE_APP_SnNGZIb_DofsdiS
+        await axios
+          .post(
+            url,
+            {
+              user: this.$session.get('user'),
+              offset: this.chatOffset,
+              limit: this.chatLimit,
+            },
+            {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'r2-7zGymRUg_KP':
+                  process.env
+                    .VUE_APP_ryqJbkBUyS_VUE_APP_jpNbolSzbkBUS_LZqwFg_VUE_APP_mSzjRKNGkkdvlSKJnKj,
+              },
+            }
+          )
+          .then(res => {
+            if (res.data.status == 'success') {
+              if (res.data.content.length > 0) this.mapLog(res.data.content)
+            } else {
+              alert(res.data.message)
+            }
+          })
+          .catch(err => {
+            alert(err)
+          })
+      }
+    },
     async initChat() {
       let url = process.env.VUE_APP_wc_tWOsG_gTCht_VUE_APP_SnNGZIb_DofsdiS
       await axios
         .post(
           url,
-          { user: this.$session.get('user') },
+          {
+            user: this.$session.get('user'),
+            offset: this.chatOffset,
+            limit: this.chatLimit,
+          },
           {
             headers: {
               'Access-Control-Allow-Origin': '*',
@@ -224,7 +267,7 @@ export default {
         })
     },
     mapLog(arr) {
-      this.log = _.map(_.cloneDeep(arr), e => {
+      _.forEach(arr, e => {
         let data = {
           pos: e.user == this.$session.get('user') ? 'right' : 'left',
           user: e.user,
@@ -234,8 +277,10 @@ export default {
           isRead: e.is_read,
           date: e.created_date,
         }
-        return data
+        this.log.push(data)
       })
+
+      this.log = _.orderBy(this.log, 'date', 'asc')
     },
     subscribe() {
       let pusher = new Pusher(
@@ -466,6 +511,7 @@ export default {
 .el-footer {
   position: fixed;
   bottom: 0;
+  margin: 0 0 1rem 0;
   width: 100%;
 }
 
