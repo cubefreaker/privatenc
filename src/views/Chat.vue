@@ -10,7 +10,9 @@
             justify="start"
           >
             <el-col :lg="1" :xs="3" :sm="2">
-              <el-avatar>{{ e.user.charAt(0).toUpperCase() }}</el-avatar>
+              <el-avatar v-show="i == 0 || log[i - 1].user != e.user">{{
+                e.user.charAt(0).toUpperCase()
+              }}</el-avatar>
             </el-col>
             <el-col :lg="22" :xs="19" :sm="20">
               <el-card id="cardLeft">
@@ -117,7 +119,9 @@
               </el-card>
             </el-col>
             <el-col :lg="1" :xs="3" :sm="2">
-              <el-avatar>{{ e.user.charAt(0).toUpperCase() }}</el-avatar>
+              <el-avatar v-show="i == 0 || log[i - 1].user != e.user">{{
+                e.user.charAt(0).toUpperCase()
+              }}</el-avatar>
             </el-col>
           </el-row>
         </div>
