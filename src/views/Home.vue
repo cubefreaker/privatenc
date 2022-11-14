@@ -4,7 +4,7 @@
       ><img alt="Header logo" src="../assets/img/header.png" height="100px"
     /></el-header>
     <el-main>
-      <el-select v-model="type">
+      <!-- <el-select v-model="type">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -27,7 +27,7 @@
       >
         <img v-if="imageUrl" :src="imageUrl" class="avatar" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </el-upload>
+      </el-upload> -->
 
       <div class="original-text" v-if="type == 'text'">
         <h3>Text</h3>
